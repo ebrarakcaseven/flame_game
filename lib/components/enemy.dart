@@ -79,8 +79,10 @@ class Enemy extends AnimationComponent {
   void update(double t) {
     super.update(t);
     this.x -= _speed * t;
-    if (this.x < (this.width)) {
-      x = size.width + width;
-    }
+  }
+
+  @override
+  bool destroy() {
+    return (this.x < (this.width));
   }
 }
