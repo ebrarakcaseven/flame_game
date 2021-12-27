@@ -1,8 +1,10 @@
 import 'package:flame/animation.dart';
 import 'package:flame/components/animation_component.dart';
 import 'package:flame/spritesheet.dart';
+import 'package:flame/time.dart';
 import 'package:flutter/rendering.dart';
 
+// ignore: constant_identifier_names
 const GRAVITY = 1000;
 
 class Character extends AnimationComponent {
@@ -11,6 +13,8 @@ class Character extends AnimationComponent {
   Animation _hitAnimation;
   double speedY = 0.0;
   double maxY = 0.0;
+  bool isHit;
+  Timer _timer;
   Character() : super.empty() {
     gameSpritesheet = SpriteSheet(
         imageName: "cat_spritesheet.png",
@@ -25,6 +29,14 @@ class Character extends AnimationComponent {
     _hitAnimation =
         gameSpritesheet.createAnimation(9, from: 0, to: 7, stepTime: 0.1);
     animation = _runAnimation;
+    isHit = false;
+    _timer = Timer(
+      2,
+      callback: () {
+        run();
+      },
+      repeat: true,
+    );
   }
 
   bool isOnGround() {
@@ -42,6 +54,7 @@ class Character extends AnimationComponent {
     super.resize(size);
   }
 
+  @override
   void update(double t) {
     speedY = speedY + GRAVITY * t;
 
@@ -51,7 +64,7 @@ class Character extends AnimationComponent {
       y = maxY;
       speedY = 0;
     }
-
+    _timer.update(t);
     super.update(t);
   }
 
@@ -60,7 +73,11 @@ class Character extends AnimationComponent {
   }
 
   void hit() {
-    animation = _hitAnimation;
+    if (!isHit) {
+      isHit = true;
+      animation = _hitAnimation;
+      _timer.start();
+    }
   }
 
   void jump() {

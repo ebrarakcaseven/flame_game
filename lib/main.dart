@@ -1,6 +1,4 @@
-import 'package:flame/components/component.dart';
 import 'package:flame/flame.dart';
-import 'package:flame/game/base_game.dart';
 import 'package:flutter/material.dart';
 import 'package:flame_game/game/game.dart';
 
