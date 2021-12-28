@@ -1,8 +1,8 @@
-import 'dart:ui';
+// ignore_for_file: unnecessary_this, constant_identifier_names
 
+import 'dart:ui';
 import 'package:flame/components/animation_component.dart';
 import 'package:flame/spritesheet.dart';
-import 'package:flame/animation.dart';
 import 'package:flame_game/constans/constans.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -14,6 +14,8 @@ class EnemyData {
   final int textureHeight;
   final int nColums;
   final int nRows;
+  final bool canFly;
+  final int speed;
 
   const EnemyData({
     @required this.imageName,
@@ -21,11 +23,14 @@ class EnemyData {
     @required this.textureHeight,
     @required this.nColums,
     @required this.nRows,
+    @required this.canFly,
+    @required this.speed,
   });
 }
 
 class Enemy extends AnimationComponent {
-  double _speed = 250;
+  // ignore: prefer_final_fields
+  double _speed = 300;
   Size size;
   int textureWidth;
   int textureHeight;
@@ -37,6 +42,8 @@ class Enemy extends AnimationComponent {
       textureHeight: 48,
       nColums: 6,
       nRows: 1,
+      canFly: false,
+      speed: 250,
     ),
     EnemyType.Snake_walk: EnemyData(
       imageName: "Snake_walk.png",
@@ -44,6 +51,8 @@ class Enemy extends AnimationComponent {
       textureHeight: 48,
       nColums: 4,
       nRows: 1,
+      canFly: true,
+      speed: 300,
     ),
   };
 
@@ -70,7 +79,7 @@ class Enemy extends AnimationComponent {
 
     this.height = textureHeight * scaleFactor;
     this.width = textureWidth * scaleFactor;
-    this.x = size.height + this.width;
+    this.x = size.width + this.width;
     this.y = size.height - groundHeight - this.height;
     this.size = size;
   }
@@ -83,6 +92,6 @@ class Enemy extends AnimationComponent {
 
   @override
   bool destroy() {
-    return (this.x < (this.width));
+    return (this.x < (-this.width));
   }
 }
